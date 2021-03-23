@@ -7,7 +7,6 @@ import Message from "../components/message";
 import FormContainer from "../components/formContainer";
 import { getUserDetails, updateUser } from "../actions/userActions";
 import { USER_UPDATE_RESET } from "../constants/userConstants";
-import {whenMapDispatchToPropsIsObject} from "react-redux/lib/connect/mapDispatchToProps";
 
 function UserEditScreen({match, history}){
     const userId = match.params.id
