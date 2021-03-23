@@ -14,13 +14,12 @@ from base.serializers import ProductSerializer
 def get_products(request):
     query = request.query_params.get('keyword')
 
-    print('query', query)
     if query is None:
         query = ''
-    products = Product.objects.filter(name__icontains=query)
+    products = Product.objects.filter(name__icontains=query).order_by('-createdAt')
 
     page = request.query_params.get('page')
-    paginator = Paginator(products, 5)
+    paginator = Paginator(products, 13)
 
     try:
         products = paginator.page(page)
@@ -39,7 +38,7 @@ def get_products(request):
 
 
 @api_view(['GET'])
-def get_top_products(requests):
+def get_top_products(request):
     products = Product.objects.filter(rating__gte=4).order_by('-rating')[0:5]
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)

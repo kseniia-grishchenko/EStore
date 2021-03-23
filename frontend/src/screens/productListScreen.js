@@ -7,6 +7,7 @@ import Message from "../components/message";
 import Paginate from "../components/paginate";
 import { listProducts, deleteProduct, createProduct } from "../actions/productActions";
 import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
+import { ExportReact } from "../components/exportExcelFile";
 
 function ProductListScreen({ history, match }){
     const dispatch = useDispatch()
@@ -22,6 +23,17 @@ function ProductListScreen({ history, match }){
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
+
+    const fileName = "products.csv"
+
+    const headers = [
+        { label: "Id", key: "product._id" },
+        { label: "Name", key: "product.name" },
+        { label: "Description", key: "product.description" },
+        { label: "Category", key: "product.category" },
+        { label: "Price", key: "product.price" },
+    ];
+
 
     let keyword = history.location.search
 
@@ -50,6 +62,20 @@ function ProductListScreen({ history, match }){
         dispatch(createProduct())
     }
 
+    const data = []
+
+    products.forEach(product => {
+        const obj = {
+            Id: product._id,
+            Name: product.name,
+            Price: product.price,
+            Description: product.description,
+            Category: product.category,
+            Brand: product.brand
+        }
+        data.push(obj)
+    })
+    console.log(data)
 
     return (
         <div>
@@ -58,11 +84,14 @@ function ProductListScreen({ history, match }){
                     <h1>Products</h1>
                 </Col>
 
+
                 <Col className='text-right'>
                     <Button className='my-3' onClick={createProductHandler}>
                         <i className='fas fa-plus'/> Create Product
                     </Button>
                 </Col>
+
+
             </Row>
 
             {loadingDelete && <Loader />}
@@ -115,6 +144,11 @@ function ProductListScreen({ history, match }){
                             </tbody>
                         </Table>
                             <Paginate pages={pages} page={page} isAdmin={true}/>
+
+
+                            <Col className='text-left'>
+                                <ExportReact dataSet={data} />
+                            </Col>
                         </div>
                     )
 
