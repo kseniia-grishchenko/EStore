@@ -48,7 +48,7 @@ class ProductSerializer(serializers.ModelSerializer):
     reviews = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
-        mogitdel = Product
+        model = Product
         fields = '__all__'
 
     def get_reviews(self, obj):
