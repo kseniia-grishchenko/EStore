@@ -87,7 +87,7 @@ def get_users(request):
 def delete_user(request, pk):
     user_to_delete = User.objects.get(id=pk)
     user_to_delete.delete()
-    return Response('User was deleted')
+    return Response('User deleted')
 
 
 @api_view(['GET'])
