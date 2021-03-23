@@ -1,37 +1,22 @@
 import React from "react";
 import { Column } from '@ant-design/charts';
 
-function DemoColumn() {
-    const data = [
-        {
-            type: 'Eye Patch Gold',
-            sales: 18,
-        },
-        {
-            type: 'Mask City',
-            sales: 5,
-        },
-        {
-            type: 'Mask Caviar',
-            sales: 3,
-        },
-        {
-            type: 'Eye Patch Lavande',
-            sales: 7,
-        },
-        {
-            type: 'Eye Patch Aloe',
-            sales: 3,
-        },
-    ];
+function DemoColumn({orderItems}) {
+
+    const data = []
+    orderItems && Object.entries(orderItems).forEach(([key, value]) =>
+        data.push({
+            type: key,
+            sales: value
+        }))
     const config = {
         data: data,
         xField: 'type',
         yField: 'sales',
         columnWidthRatio: 0.8,
         meta: {
-            type: { alias: '类别' },
-            sales: { alias: '销售额' },
+            type: { alias: "type" },
+            sales: { alias: "sales" },
         },
     };
     return (

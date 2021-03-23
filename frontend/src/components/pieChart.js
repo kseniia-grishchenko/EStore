@@ -1,25 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Pie } from '@ant-design/charts';
 
-function DemoPie(){
-    const data = [
-        {
-            type: 'Eye patch',
-            value: 6,
-        },
-        {
-            type: 'Lip patch',
-            value: 2,
-        },
-        {
-            type: 'Foot patch',
-            value: 1,
-        },
-        {
-            type: 'Face mask',
-            value: 4,
-        },
-    ];
+function DemoPie({ categories }){
+
+    const data = []
+    Object.entries(categories).forEach(([key, value]) =>
+    data.push({
+        type: key,
+        value: value
+    }))
+
     const config = {
         appendPadding: 10,
         data: data,
