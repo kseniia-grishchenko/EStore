@@ -11,12 +11,12 @@ export const ExportReact = ({dataSet}) => {
     return (
         <ExcelFile element={<Button variant="warning">Export</Button>}>
             <ExcelSheet data={dataSet} name="Products">
-                <ExcelColumn label="Id" value="Id"/>
-                <ExcelColumn label="Name" value="Name"/>
-                <ExcelColumn label="Price" value="Price"/>
-                <ExcelColumn label="Description" value="Description"/>
-                <ExcelColumn label="Category" value="Category"/>
-                <ExcelColumn label="Brand" value="Brand"/>
+                <ExcelColumn label="_id" value="_id"/>
+                <ExcelColumn label="name" value="name"/>
+                <ExcelColumn label="price" value="price"/>
+                <ExcelColumn label="description" value="description"/>
+                <ExcelColumn label="category" value="category"/>
+                <ExcelColumn label="brand" value="brand"/>
             </ExcelSheet>
         </ExcelFile>
     )

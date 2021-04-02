@@ -8,6 +8,8 @@ import Paginate from "../components/paginate";
 import { listProducts, deleteProduct, createProduct } from "../actions/productActions";
 import { PRODUCT_CREATE_RESET } from "../constants/productConstants";
 import { ExportReact } from "../components/exportExcelFile";
+import ProductTable from "../components/productTable";
+import ExcelReader from "../components/importExcelFile";
 
 function ProductListScreen({ history, match }){
     const dispatch = useDispatch()
@@ -23,17 +25,6 @@ function ProductListScreen({ history, match }){
 
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
-
-    const fileName = "products.csv"
-
-    const headers = [
-        { label: "Id", key: "product._id" },
-        { label: "Name", key: "product.name" },
-        { label: "Description", key: "product.description" },
-        { label: "Category", key: "product.category" },
-        { label: "Price", key: "product.price" },
-    ];
-
 
     let keyword = history.location.search
 
@@ -52,12 +43,6 @@ function ProductListScreen({ history, match }){
 
     }, [dispatch, history, userInfo, successDelete, successCreate, createdProduct, keyword])
 
-    const deleteHandler = (id) => {
-        if(window.confirm('Are you sure you want to delete this product?')){
-            dispatch(deleteProduct(id))
-        }
-    }
-
     const createProductHandler = () => {
         dispatch(createProduct())
     }
@@ -66,16 +51,15 @@ function ProductListScreen({ history, match }){
 
     products.forEach(product => {
         const obj = {
-            Id: product._id,
-            Name: product.name,
-            Price: product.price,
-            Description: product.description,
-            Category: product.category,
-            Brand: product.brand
+            _id: product._id,
+            name: product.name,
+            price: product.price,
+            description: product.description,
+            category: product.category,
+            brand: product.brand
         }
         data.push(obj)
     })
-    console.log(data)
 
     return (
         <div>
@@ -106,49 +90,13 @@ function ProductListScreen({ history, match }){
                     ? (<Message variant='danger'>{error}</Message>)
                     : (
                         <div>
-                        <Table striped bordered hover responsive className='table-sm'>
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>NAME</th>
-                                <th>PRICE</th>
-                                <th>CATEGORY</th>
-                                <th>BRAND</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-
-                            <tbody>
-                            {products.map(product => (
-                                <tr key={product._id}>
-                                    <td>{product._id}</td>
-                                    <td>{product.name}</td>
-                                    <td>{product.price}₴</td>
-                                    <td>{product.category}</td>
-                                    <td>{product.brand}</td>
-
-                                    <td>
-                                        <LinkContainer to={`/admin/product/${product._id}/edit`}>
-                                            <Button variant='light' className='btn-sm'>
-                                                <i className='fas fa-edit'/>
-                                            </Button>
-                                        </LinkContainer>
-
-                                        <Button variant='danger' className='btn-sm' onClick={() => deleteHandler(product._id)}>
-                                            <i className='fas fa-trash'/>
-                                        </Button>
-                                    </td>
-
-                                </tr>
-                            ))}
-                            </tbody>
-                        </Table>
+                        <ProductTable products={products}/>
                             <Paginate pages={pages} page={page} isAdmin={true}/>
-
-
                             <Col className='text-left'>
                                 <ExportReact dataSet={data} />
                             </Col>
+                                <ExcelReader />
+
                         </div>
                     )
 
